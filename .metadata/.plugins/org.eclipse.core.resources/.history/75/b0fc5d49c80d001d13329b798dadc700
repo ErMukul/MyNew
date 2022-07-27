@@ -1,0 +1,46 @@
+package com.mukul;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Date;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class App 
+{
+    public static void main( String[] args ) throws IOException
+    {
+        System.out.println( "Project Started" );
+        
+        Configuration cfg=new Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory=cfg.buildSessionFactory();
+        
+        Student sdt=new Student();
+        sdt.setName("Mukul Dubey");
+        sdt.setStreet("Shiv Street");
+        sdt.setCity("Kanpur");
+        sdt.setX(120000);
+        sdt.setDate(new Date());
+        
+        //To Read image
+        
+        FileInputStream fis=new FileInputStream("src/main/java/Nature.jpg");
+        byte[] b=new byte[fis.available()];
+        fis.read(b);
+        sdt.setImage(b);
+        
+        Session ses=factory.openSession();
+        Transaction tx=ses.beginTransaction();
+        
+        ses.save(sdt);
+        tx.commit();
+        ses.close();
+        
+        System.out.println("Done");
+    }
+}
